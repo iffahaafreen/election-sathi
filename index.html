@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description"
+        content="Electoral Saathi - Your multilingual, accessible assistant for the Indian election process.">
+    <title>Electoral Saathi | Election Assistant</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@400;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Accessibility: Skip to Content -->
+    <a href="#main-content" class="skip-link" data-i18n="skipToContent">Skip to main content</a>
+
+    <!-- Accessibility: Aria Live Region for announcements -->
+    <div id="a11y-announcer" aria-live="polite" class="sr-only"></div>
+
+    <header class="app-header">
+        <div class="container">
+            <div class="logo-area">
+                <!-- SVG Logo placeholder -->
+                <svg width="40" height="40" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true">
+                    <circle cx="50" cy="50" r="45" stroke="var(--navy-blue)" stroke-width="5" />
+                    <circle cx="50" cy="50" r="15" fill="var(--saffron)" />
+                    <path d="M50 15L50 85M15 50L85 50" stroke="var(--navy-blue)" stroke-width="2" />
+                    <path d="M25 25L75 75M25 75L75 25" stroke="var(--navy-blue)" stroke-width="2" />
+                </svg>
+                <h1 class="app-title" data-i18n="appName">Electoral Saathi</h1>
+            </div>
+
+            <nav class="main-nav" aria-label="Main navigation">
+                <ul>
+                    <li><a href="#home" data-target="timeline" data-i18n="navTimeline">Process</a></li>
+                    <li><a href="#home" data-target="learning" data-i18n="navLearning">Learn</a></li>
+                    <li><a href="#home" data-target="quiz" data-i18n="navQuiz">Quiz</a></li>
+                    <li><a href="#glossary" data-i18n="navGlossary">Glossary</a></li>
+                </ul>
+                <div class="controls">
+                    <button id="langToggle" class="btn-toggle" aria-label="Switch Language to Hindi"
+                        aria-pressed="false">
+                        <span class="lang-text">A / अ</span>
+                        <span class="sr-only">Toggle Language</span>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <main id="app-root">
+        <!-- Views rendered by JS router -->
+    </main>
+
+    <!-- Intelligent Q&A Chatbot -->
+    <div id="chatbot" class="chatbot-container" aria-labelledby="chat-heading">
+        <button id="chatbotToggle" class="chatbot-toggle-btn" aria-expanded="false" aria-controls="chatbotPanel"
+            aria-label="Open Electoral Saathi Chatbot">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+            </svg>
+            <span class="sr-only">Chat</span>
+        </button>
+
+        <div id="chatbotPanel" class="chatbot-panel hidden">
+            <div class="chatbot-header">
+                <h3 id="chat-heading" data-i18n="chatbotTitle">Ask Saathi</h3>
+                <button id="chatbotCloseBtn" class="btn-icon" aria-label="Close Chat">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M18 6L6 18M6 6l12 12"></path>
+                    </svg>
+                </button>
+            </div>
+            <div id="chatbotMessages" class="chatbot-messages" aria-live="polite" role="log">
+                <div class="message bot-message">
+                    <p data-i18n="chatbotGreeting">Namaste! I am Electoral Saathi. How can I help you with election
+                        information today?</p>
+                </div>
+            </div>
+            <div class="chatbot-input-area">
+                <input type="text" id="chatbotInput" data-i18n-placeholder="chatbotInputPlaceholder"
+                    placeholder="Ask a question..." aria-label="Type your message">
+                <button id="chatbotSendBtn" class="btn-icon" aria-label="Send message">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer" class="app-footer">
+        <div class="container footer-grid">
+            <div class="footer-info">
+                <h3 class="footer-title" data-i18n="appName">Electoral Saathi</h3>
+                <p data-i18n="footerTagline">An accessible guide to democracy.</p>
+                <div class="helpline-box">
+                    <span class="helpline-label" data-i18n="voterHelpline">National Voter Helpline</span>
+                    <a href="tel:1950" class="helpline-number" aria-label="Call National Voter Helpline at 1950">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path
+                                d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                            </path>
+                        </svg>
+                        1950
+                    </a>
+                </div>
+            </div>
+
+            <div class="footer-links">
+                <h4 data-i18n="officialResources">Official Resources</h4>
+                <ul>
+                    <li><a href="https://voters.eci.gov.in/" target="_blank" rel="noopener noreferrer"
+                            aria-label="National Voters' Services Portal (opens in new tab)">NVSP Portal</a></li>
+                    <li><a href="https://eci.gov.in/" target="_blank" rel="noopener noreferrer"
+                            aria-label="Election Commission of India (opens in new tab)">ECI Official Website</a></li>
+                    <li><a href="https://play.google.com/store/apps/details?id=com.eci.citizen" target="_blank"
+                            rel="noopener noreferrer" aria-label="Voter Helpline App (opens in new tab)">Voter Helpline
+                            App</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-disclaimer">
+                <h4 data-i18n="disclaimerTitle">Disclaimer</h4>
+                <p data-i18n="disclaimerText">This application is created for educational purposes. All election
+                    information provided is based on official Voter Education material from the Election Commission of
+                    India. Not an official ECI application.</p>
+                <div class="a11y-statement">
+                    <strong data-i18n="accessibilityStatementTitle">Accessibility Statement:</strong>
+                    <span data-i18n="accessibilityStatementText">Committed to WCAG 2.1 AA compliance.</span>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Electoral Saathi. Open Source Educational Project.</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="i18n.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
