@@ -34,6 +34,21 @@ An AI-powered, multilingual, WCAG 2.1 AA-compliant assistant that helps Indian c
 
 ---
 
+## ☁️ Google Services Integration
+
+This project uses the following Google services:
+
+| Service | Purpose |
+| :--- | :--- |
+| **Google Cloud Run** | Production deployment with auto-scaling |
+| **Google Cloud Build** | CI/CD — automatic deployment on every Git push |
+| **Google Container Registry** | Secure storage of Docker container images |
+| **Google Antigravity** | AI-powered IDE for intent-driven development |
+
+---
+
+### Deployment Architecture
+
 ## 📂 Project Structure
 election-sathi/
 - ├── index.html # Main app shell (header, footer, chatbot, router entry)
