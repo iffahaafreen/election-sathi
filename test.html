@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Electoral Saathi - Test Suite</title>
+    <style>
+        body { font-family: monospace; max-width: 800px; margin: 2rem auto; padding: 0 1rem; }
+        .pass { color: #138808; } .fail { color: #DC2626; }
+        .test { padding: 0.5rem; border-bottom: 1px solid #ddd; }
+        .summary { font-size: 1.2rem; font-weight: bold; margin-top: 1rem; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Electoral Saathi Test Suite</h1>
+    <div id="results"></div>
+    <div id="summary" class="summary"></div>
+
+    <script src="i18n.js"></script>
+    <script>
+        const results = [];
+        let passed = 0, failed = 0;
+
+        function test(name, fn) {
+            try {
+                fn();
+                results.push({ name, status: 'pass' });
+                passed++;
+            } catch (e) {
+                results.push({ name, status: 'fail', error: e.message });
+                failed++;
+            }
+        }
+
+        // ─── Data Integrity Tests ──────────────────────────────────────────
+        test('Translations: English object exists', () => {
+            if (!translations || !translations.en) throw 'Missing translations.en';
+        });
+
+        test('Translations: Hindi object exists', () => {
+            if (!translations.hi) throw 'Missing translations.hi';
+        });
+
+        test('Translations: Both languages have same keys', () => {
+            const enKeys = Object.keys(translations.en).sort();
+            const hiKeys = Object.keys(translations.hi).sort();
+            if (JSON.stringify(enKeys) !== JSON.stringify(hiKeys)) throw 'Key mismatch';
+        });
+
+        test('TimelineData: 6 phases in English', () => {
+            if (!timelineData.en || timelineData.en.length !== 6) throw 'Expected 6 English phases';
+        });
+
+        test('TimelineData: 6 phases in Hindi', () => {
+            if (!timelineData.hi || timelineData.hi.length !== 6) throw 'Expected 6 Hindi phases';
+        });
+
+        test('Quiz: 5 questions in English', () => {
+            if (!quizQuestions.en || quizQuestions.en.length !== 5) throw 'Expected 5 English questions';
+        });
+
+        test('Quiz: All questions have 4 options', () => {
+            quizQuestions.en.forEach((q, i) => {
+                if (q.options.length !== 4) throw `Question ${i+1}: expected 4 options, got ${q.options.length}`;
+            });
+        });
+
+        test('Quiz: All correctAnswer indices are valid', () => {
+            quizQuestions.en.forEach((q, i) => {
+                if (q.correctAnswer < 0 || q.correctAnswer >= q.options.length) {
+                    throw `Question ${i+1}: invalid correctAnswer index ${q.correctAnswer}`;
+                }
+            });
+        });
+
+        test('Glossary: 10 terms in English', () => {
+            if (!glossaryData.en || glossaryData.en.length !== 10) throw 'Expected 10 English glossary terms';
+        });
+
+        test('Glossary: 10 terms in Hindi', () => {
+            if (!glossaryData.hi || glossaryData.hi.length !== 10) throw 'Expected 10 Hindi glossary terms';
+        });
+
+        test('Chatbot: Answers exist for both languages', () => {
+            if (!chatbotAnswers.en || chatbotAnswers.en.length < 10) throw 'English chatbot answers missing';
+            if (!chatbotAnswers.hi || chatbotAnswers.hi.length < 10) throw 'Hindi chatbot answers missing';
+        });
+
+        test('Chatbot: Keyword matching works (EVM)', () => {
+            const query = 'what is an evm machine';
+            const found = chatbotAnswers.en.some(item => 
+                item.keywords.some(kw => query.includes(kw))
+            );
+            if (!found) throw 'EVM query should match';
+        });
+
+        test('Chatbot: Keyword matching works (NOTA)', () => {
+            const query = 'tell me about nota';
+            const found = chatbotAnswers.en.some(item => 
+                item.keywords.some(kw => query.includes(kw))
+            );
+            if (!found) throw 'NOTA query should match';
+        });
+
+        test('VideosData: 3 videos in English', () => {
+            if (!videosData.en || videosData.en.length !== 3) throw 'Expected 3 English videos';
+        });
+
+        test('Phase 5: Polling day has subSteps', () => {
+            const phase5 = timelineData.en[4];
+            if (!phase5.subSteps || phase5.subSteps.length !== 5) throw 'Expected 5 subSteps';
+        });
+
+        // ─── Edge Case Tests ───────────────────────────────────────────────
+        test('Edge case: Missing translations key returns undefined gracefully', () => {
+            const val = translations.en['nonexistentKey'];
+            if (val !== undefined) throw 'Expected undefined for missing key';
+        });
+
+        test('Edge case: Hindi quiz has same structure as English', () => {
+            if (quizQuestions.hi.length !== quizQuestions.en.length) throw 'Quiz length mismatch';
+        });
+
+        test('Edge case: All phases have required fields', () => {
+            timelineData.en.forEach((phase, i) => {
+                if (!phase.phase) throw `Phase ${i} missing phase number`;
+                if (!phase.title) throw `Phase ${i} missing title`;
+                if (!phase.desc) throw `Phase ${i} missing description`;
+                if (!phase.fact) throw `Phase ${i} missing fact`;
+            });
+        });
+
+        test('Edge case: Phase 2 has noVideo flag', () => {
+            if (!timelineData.en[1].noVideo) throw 'Phase 2 should have noVideo: true';
+        });
+
+        // ─── Render Results ────────────────────────────────────────────────
+        const resultsDiv = document.getElementById('results');
+        results.forEach(r => {
+            const div = document.createElement('div');
+            div.className = 'test';
+            div.innerHTML = r.status === 'pass' 
+                ? `<span class="pass">✅ ${r.name}</span>`
+                : `<span class="fail">❌ ${r.name}<br><small>${r.error}</small></span>`;
+            resultsDiv.appendChild(div);
+        });
+
+        const summary = document.getElementById('summary');
+        summary.innerHTML = `Passed: <span class="pass">${passed}</span> | Failed: <span class="fail">${failed}</span> | Total: ${passed + failed}`;
+    </script>
+</body>
+</html>
